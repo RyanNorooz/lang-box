@@ -2,6 +2,8 @@ import processes from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
 
+const ignoreLangs = ["yaml", "yml", "json", "cjson", "svg"];
+
 const run = (command, options) =>
   new Promise((resolve, reject) => {
     console.debug(`run > ${command}`);
@@ -61,19 +63,21 @@ export const runLinguist = async (files) => {
 
   const langs = Object.entries({ ...res })
     .reduce((acc, [name, v]) => {
-      acc.push({
-        name,
-        percent: +v.percentage,
-        additions: v.files.reduce(
-          (acc, p) => acc + (pathFileMap[p]?.additions ?? 0),
-          0
-        ),
-        deletions: v.files.reduce(
-          (acc, p) => acc + (pathFileMap[p]?.deletions ?? 0),
-          0
-        ),
-        count: v.files.length,
-      });
+      console.log(name);
+      !!ignoreLangs.indexOf(name) &&
+        acc.push({
+          name,
+          percent: +v.percentage,
+          additions: v.files.reduce(
+            (acc, p) => acc + (pathFileMap[p]?.additions ?? 0),
+            0
+          ),
+          deletions: v.files.reduce(
+            (acc, p) => acc + (pathFileMap[p]?.deletions ?? 0),
+            0
+          ),
+          count: v.files.length,
+        });
       return acc;
     }, [])
     .sort((a, b) => b.percent - a.percent);
