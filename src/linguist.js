@@ -3,6 +3,7 @@ import { promises as fs } from 'fs'
 import path from 'path'
 
 const ignoreLangs = ['yaml', 'json', 'svg', 'xml', 'toml', 'markdown']
+console.log('ignoreLangs: ', ignoreLangs)
 
 const run = (command, options) =>
   new Promise((resolve, reject) => {
@@ -61,7 +62,8 @@ export const runLinguist = async (files) => {
 
   const langs = Object.entries({ ...res })
     .reduce((acc, [name, v]) => {
-      if (!!ignoreLangs.indexOf(name.trim().toLowerCase())) return acc
+      console.log('name: ', name)
+      if (ignoreLangs.indexOf(name.trim().toLowerCase())) return acc
 
       acc.push({
         name,
@@ -73,6 +75,7 @@ export const runLinguist = async (files) => {
       return acc
     }, [])
     .sort((a, b) => b.percent - a.percent)
+  console.log('langs: ', langs)
 
   return langs
 }
