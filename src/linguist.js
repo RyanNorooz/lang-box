@@ -12,6 +12,7 @@ const ignoreLangs = [
   "toml",
   "markdown",
 ];
+console.log("ignoreLangs: ", ignoreLangs);
 
 const run = (command, options) =>
   new Promise((resolve, reject) => {
@@ -72,7 +73,7 @@ export const runLinguist = async (files) => {
 
   const langs = Object.entries({ ...res })
     .reduce((acc, [name, v]) => {
-      console.log({ name });
+      console.log("name: ", name);
       !ignoreLangs.indexOf(name.toLowerCase()) &&
         acc.push({
           name,
@@ -90,7 +91,7 @@ export const runLinguist = async (files) => {
       return acc;
     }, [])
     .sort((a, b) => b.percent - a.percent);
-  console.log({ langs });
+  console.log("langs: ", langs);
 
   return langs;
 };
