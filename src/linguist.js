@@ -63,10 +63,6 @@ export const runLinguist = async (files) => {
   const langs = Object.entries({ ...res })
     .reduce((acc, [name, v]) => {
       const cleanName = name.trim().toLowerCase()
-      console.log('name:', `"${name}"`)
-      console.log('cleanName:', `"${cleanName}"`)
-      console.log({ name, cleanName })
-
       if (ignoreLangs.includes(cleanName)) return acc
 
       acc.push({
@@ -79,7 +75,6 @@ export const runLinguist = async (files) => {
       return acc
     }, [])
     .sort((a, b) => b.percent - a.percent)
-  console.log('langs:', langs)
 
   return langs
 }
